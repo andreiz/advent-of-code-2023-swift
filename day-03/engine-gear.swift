@@ -1,5 +1,6 @@
 import Foundation
 
+// Define a struct to hold coordinates of a cell
 struct Coords: Hashable {
     let row: Int
     let col: Int
@@ -31,7 +32,7 @@ func getChar(_ data: [[Character]], _ row: Int, _ col: Int) -> Character? {
 }
 
 // Define a function called findNeighborStars that checks the cell's neighbors
-// and returns a list of cells where stars are found
+// and returns a set of cells where stars are found
 func findNeighborStars(_ data: [[Character]], _ row: Int, _ col: Int) -> Set<Coords> {
     // Define a data structure to access 8 neighbors of a cell.
     let neighbors = [
@@ -56,6 +57,7 @@ guard CommandLine.arguments.count == 2 else {
 }
 
 if let data = readInputFile(CommandLine.arguments[1]) {
+    // Define a dictionary to hold the star coordinates andthe numbersit is adjacent to
     var starNumbers: [Coords: [Int]] = [:]
 
     for row in 0 ..< data.count {
@@ -65,6 +67,7 @@ if let data = readInputFile(CommandLine.arguments[1]) {
         for col in 0 ..< data[row].count {
             if let char = getChar(data, row, col), char.isNumber {
                 currentNumber.append(char)
+                // Add coordinates of any stars found to the set
                 starCoords.formUnion(findNeighborStars(data, row, col))
             } else {
                 if let number = Int(currentNumber), !starCoords.isEmpty {
@@ -89,11 +92,10 @@ if let data = readInputFile(CommandLine.arguments[1]) {
         print("Star at (\(coords.row), \(coords.col)) is adjacent to \(numbers)")
     }
 
-    // Filter out stars with exactly two numbers. Then sum the product of all number values.
     let gearRatiosProduct = starNumbers
-        .filter { $1.count == 2 }
-        .map { $1.reduce(1, *) }
-        .reduce(0, +)
+        .filter { $1.count == 2 } // only consider stars adjacent to exactly 2 numbers
+        .map { $1.reduce(1, *) } // multiply the 2 numbers together
+        .reduce(0, +) // sum the products
 
     print(gearRatiosProduct)
 }
