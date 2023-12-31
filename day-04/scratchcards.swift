@@ -13,7 +13,7 @@ func part1(_ cards: [String]) {
     for card in cards {
         let numMatches = getNumMatches(card)
         if numMatches > 0 {
-            let score = 1 << (numMatches - 1)
+            let score = 1 << (numMatches - 1) // 2^(numMatches - 1)
             print("\(card) = \(score)")
             totalScore += score
         }
