@@ -34,6 +34,7 @@ let filename = CommandLine.arguments[1]
 if let result = parseInputFile(filename: filename) {
     var ways = [Int]()
     for (time, distance) in result {
+        // ways.append((0 ... time).filter { $0 * (time - $0) > distance }.count)
         let mid = (time + 1) / 2
         let isRangeOdd = (time + 1) % 2 == 1
         var count = 0
