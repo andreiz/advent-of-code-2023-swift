@@ -30,40 +30,33 @@ struct Mapper {
 }
 
 func processInput(input: String) -> ([Int], [Mapper]) {
-    var seeds: [Int] = []
+    // Initialize an empty array to hold Mapper objects.
     var mappers: [Mapper] = []
-    var currentMappings: [Mapping] = []
-    var currentMapName = ""
 
-    let lines = input.split(separator: "\n", omittingEmptySubsequences: false)
+    // Split the input string into parts, each part separated by two newlines.
+    let parts = input.split(separator: "\n\n")
 
-    for line in lines {
-        if line.hasPrefix("seeds:") {
-            seeds = line.split(separator: " ")
-                .dropFirst()
-                .compactMap { Int($0) }
-        } else if line.hasSuffix("map:") {
-            currentMapName = String(line.split(separator: ":")[0])
-        } else if line.isEmpty {
-            if !currentMappings.isEmpty {
-                mappers.append(Mapper(name: currentMapName, mappings: currentMappings))
-                currentMappings = []
-            }
-            currentMapName = ""
-        } else if !currentMapName.isEmpty {
+    // Process the first part to extract seed values. Skip the first word ("seeds:")
+    // and convert the remaining strings to integers.
+    let seeds = parts[0].split(separator: " ").dropFirst().compactMap { Int($0) }
+
+    // Process the remaining parts to create Mapper objects.
+    mappers = parts.dropFirst().map { chunk -> Mapper in
+        // Extract the name of the mapper from the first line of each chunk.
+        let name = chunk.split(separator: "\n").first!.split(separator: " ").first!
+
+        // Process each subsequent line in the chunk to create Mapping objects.
+        // Each line represents a set of numbers defining a Mapping.
+        let mappings = chunk.split(separator: "\n").dropFirst().compactMap { line -> Mapping? in
             let numbers = line.split(separator: " ").compactMap { Int($0) }
-            if numbers.count == 3 {
-                let mapping = Mapping(outputStart: numbers[0], inputStart: numbers[1], length: numbers[2])
-                currentMappings.append(mapping)
-            }
+            return Mapping(outputStart: numbers[0], inputStart: numbers[1], length: numbers[2])
         }
+
+        // Create a Mapper object with the extracted name and the array of Mappings.
+        return Mapper(name: String(name), mappings: mappings)
     }
 
-    // Add the last mapper if there are any remaining mappings
-    if !currentMappings.isEmpty {
-        mappers.append(Mapper(name: currentMapName, mappings: currentMappings))
-    }
-
+    // Return a tuple containing the array of seeds and the array of Mappers.
     return (seeds, mappers)
 }
 
