@@ -24,7 +24,7 @@ func traverseGraph(graph: Graph, instructions: String) -> [String] {
     var currentNode = "AAA"
     var path = [String]([currentNode])
 
-    while currentNode != "ZZZ" {
+    while true {
         for turn in instructions {
             switch turn {
             case "L":
@@ -34,14 +34,12 @@ func traverseGraph(graph: Graph, instructions: String) -> [String] {
             default:
                 fatalError("Unknown turn: \(turn)")
             }
-            if currentNode == "ZZZ" {
-                path.append(currentNode)
-                break
-            }
             path.append(currentNode)
+            if currentNode == "ZZZ" {
+                return path
+            }
         }
     }
-    return path
 }
 
 let input = try! String(contentsOfFile: CommandLine.arguments[1])
