@@ -32,7 +32,7 @@ func processFile(filename: String) {
     var possibleGameSum = 0
 
     // Try to read the contents of the file.
-    if let contents = try? String(contentsOfFile: filename) {
+    if let contents = try? String(contentsOfFile: filename, encoding: .utf8) {
         // Split the file contents into individual lines.
         let lines = contents.components(separatedBy: .newlines)
         for line in lines {

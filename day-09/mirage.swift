@@ -34,8 +34,6 @@ for line in input {
     let firstValue = differences.reversed().reduce(0) { current, sequence in
         -current + (sequence.first ?? 0)
     }
-    print("lastValue: \(lastValue)")
-    print("firstValue: \(firstValue)")
     sumLast += lastValue
     sumFirst += firstValue
 }

@@ -13,7 +13,7 @@ struct Coords: Hashable {
 
 func readInputFile(_ inputFile: String) -> [[Character]]? {
     do {
-        let fileContents = try String(contentsOfFile: inputFile)
+        let fileContents = try String(contentsOfFile: inputFile, encoding: .utf8)
         // return file contents as a 2D array of characters, skipping empty lines
         return fileContents.split(separator: "\n").map { Array($0) }
     } catch {

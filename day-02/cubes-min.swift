@@ -41,7 +41,7 @@ func processFile(filename: String) {
     var possibleGameSum = 0
     var cubeProductSum = 0
 
-    if let contents = try? String(contentsOfFile: filename) {
+    if let contents = try? String(contentsOfFile: filename, encoding: .utf8) {
         let lines = contents.split(separator: "\n")
         for line in lines {
             let parts = line.split(separator: ":")
